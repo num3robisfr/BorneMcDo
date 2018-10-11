@@ -22,6 +22,12 @@ public interface GestionCatalogueLocal {
 
     public List<SousCategorie> getSousCategorieByMenu(String idMenu);
 
+    public Article getArticleByid(String id);
+
+    public Menu getMenuById(String id);
+
+    public Long getIdMenu(String nom);
+
 
     
 }

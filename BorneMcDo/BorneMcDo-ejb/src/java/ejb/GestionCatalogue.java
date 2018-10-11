@@ -56,4 +56,28 @@ public class GestionCatalogue implements GestionCatalogueLocal {
         List<SousCategorie> lsc = qr.getResultList();
         return lsc;
     }
+    
+    @Override
+    public Article getArticleByid(String id){
+        TypedQuery<Article> qr = em.createNamedQuery("entites.Article.getArticleById", Article.class);
+        qr.setParameter("param", Integer.valueOf(id));
+        Article a = qr.getSingleResult();
+        return a;
+    }
+    
+    @Override
+    public Menu getMenuById(String id){
+        TypedQuery<Menu> qr = em.createNamedQuery("entites.Menu.getMenuById", Menu.class);
+        qr.setParameter("param", Integer.valueOf(id));
+        Menu m = qr.getSingleResult();
+        return m;
+    }
+    
+    @Override
+    public Long getIdMenu(String nom){
+        TypedQuery<Long> qr = em.createNamedQuery("entites.Menu.getIdMenu", Long.class);
+        qr.setParameter("param", nom);
+        Long id = qr.getSingleResult();
+        return id;
+    }
 }

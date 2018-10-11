@@ -590,6 +590,7 @@ public class CreationJeuEssai implements CreationJeuEssaiLocal {
         petitAccomp.getLesMenus().add(menuHappyMeal);
         boissonJus.getLesMenus().add(menuHappyMeal);
         ptitDessert.getLesMenus().add(menuHappyMeal);
+        cadeau.getLesMenus().add(menuHappyMeal);
         boissonJus.getLesMenus().add(menuSalade);
         saladCat.getLesMenus().add(menuSalade);
 

@@ -27,7 +27,7 @@
         <c:forEach var="b" items="${burger}">
             <div class="col-4">
                 <div class="cat-centre">
-                   <a class="cat-centre" href="Controller?section=ScCatalogue&cat=nos menus&menu=${b.id}">
+                   <a class="cat-centre" href="Controller?section=ScCatalogue&cat=nos menus&menu=${b.id}&etape=1">
                         <img class="cat-centre" src="${b.image}"/>
                         <p class="cat-centre">${b.nom}</p>
                     </a>

@@ -27,7 +27,7 @@
         <c:forEach var="b" items="${liste}">
             <div class="col-4">
                 <div class="cat-centre">
-                   <a class="cat-centre" href="Controller?section=ScCatalogue&${chemin}&boisson=${b.id}&etape=3">
+                   <a class="cat-centre" href="${chemin}&dessert=${b.id}&etape=5">
                         <img class="cat-centre" src="${b.image}"/>
                         <p class="cat-centre">${b.nom}</p>
                     </a>
@@ -50,4 +50,3 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     </body>
 </html>
-

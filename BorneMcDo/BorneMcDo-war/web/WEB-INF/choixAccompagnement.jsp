@@ -27,7 +27,7 @@
         <c:forEach var="b" items="${liste}">
             <div class="col-4">
                 <div class="cat-centre">
-                   <a class="cat-centre" href="${chemin}&accompagnement=${b.id}">
+                   <a class="cat-centre" href="${chemin}&accompagnement=${b.id}&etape=4">
                         <img class="cat-centre" src="${b.image}"/>
                         <p class="cat-centre">${b.nom}</p>
                     </a>
