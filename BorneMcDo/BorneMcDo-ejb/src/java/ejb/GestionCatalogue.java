@@ -4,6 +4,7 @@ import entites.Article;
 import entites.Categorie;
 import entites.Menu;
 import entites.SousCategorie;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -80,4 +81,37 @@ public class GestionCatalogue implements GestionCatalogueLocal {
         Long id = qr.getSingleResult();
         return id;
     }
+    
+    @Override
+    public List<Article> afficheArticleByCategorie(String categorie){
+        List<Article> laListe = new ArrayList<Article>();
+        List<SousCategorie> lsc = SelectSousCatByCategorie(categorie);
+        for (SousCategorie lsc1 : lsc) {
+            List<Article> la = SelectArticleBySousCategorie(lsc1);
+            for (Article la1 : la) {
+                laListe.add(la1);
+            }
+        }
+        return laListe;                
+    }
+    
+    @Override
+    public List<Article> afficherArticleBySousCategorie(String SsCat){
+        SousCategorie sousCat = new SousCategorie(SsCat);
+        List<Article> la = SelectArticleBySousCategorie(sousCat);
+        return la;
+    }
+    
+    @Override
+    public List<Article> afficherArticleBySousCategorie(List<String> SsCat) {
+        List<Article> laListe = new ArrayList<>();
+        for (String SsCat1 : SsCat) {
+            List<Article> la1 = afficherArticleBySousCategorie(SsCat1);
+            for (Article ar : la1) {
+                laListe.add(ar);
+            }
+        }
+        return laListe;
+    }
+
 }

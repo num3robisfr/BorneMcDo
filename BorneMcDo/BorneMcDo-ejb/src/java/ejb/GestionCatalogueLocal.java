@@ -28,6 +28,11 @@ public interface GestionCatalogueLocal {
 
     public Long getIdMenu(String nom);
 
+    public List<Article> afficheArticleByCategorie(String categorie);
 
+    public List<Article> afficherArticleBySousCategorie(String SsCat);
+
+    public List<Article> afficherArticleBySousCategorie(List<String> SsCat);
     
+
 }

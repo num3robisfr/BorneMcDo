@@ -3,6 +3,7 @@ package sousControllers;
 import ejb.GestionCatalogueLocal;
 import entites.Article;
 import entites.Categorie;
+import entites.Choix;
 import entites.Menu;
 import entites.SousCategorie;
 import java.util.ArrayList;
@@ -32,6 +33,7 @@ public class ScCatalogue implements SousController {
         String dessert = request.getParameter("dessert");
         String cadeau = request.getParameter("cadeau");
         Menu m = new Menu();
+        Choix choixMenu = new Choix();
         
         
         GestionCatalogueLocal gestionCatalogue = lookupGestionCatalogueLocal();
@@ -47,48 +49,20 @@ public class ScCatalogue implements SousController {
         }
         
         if (cat != null) {
-            if (cat.equalsIgnoreCase("nos burgers")) {
-                SousCategorie burger = new SousCategorie("burger");
-                List<Article> la = gestionCatalogue.SelectArticleBySousCategorie(burger);
-                request.setAttribute("article", la);
+            if (cat.equalsIgnoreCase("nos burgers") || cat.equalsIgnoreCase("nos desserts") || cat.equalsIgnoreCase("nos salades")) {
+                request.setAttribute("article", gestionCatalogue.afficheArticleByCategorie(cat));
             }
-            if (cat.equalsIgnoreCase("nos desserts")) {
-                List<Article> laListe = new ArrayList<Article>();
-                List<SousCategorie> lsc = gestionCatalogue.SelectSousCatByCategorie(cat);
-                for (SousCategorie lsc1 : lsc) {
-                   List<Article> la = gestionCatalogue.SelectArticleBySousCategorie(lsc1);
-                    for (Article la1 : la) {
-                        laListe.add(la1);
-                    }
-                }
 
-                request.setAttribute("article", laListe);
-            }
             if (cat.equalsIgnoreCase("nos frites et sauces")) {
-                List<Article> laListe = new ArrayList<Article>();
-                List<SousCategorie> lsc = gestionCatalogue.SelectSousCatByCategorie(cat);
-                for (SousCategorie lsc1 : lsc) {
-                    if ((lsc1.getNom().equalsIgnoreCase("accompagnements")) || (lsc1.getNom().equalsIgnoreCase("sauce"))) {
-                        List<Article> la = gestionCatalogue.SelectArticleBySousCategorie(lsc1);
-                        for (Article la1 : la) {
-                            laListe.add(la1);
-                        }
-                    }
-                }
+                List<String> ls = new ArrayList<>();
+                ls.add("accompagnements");
+                ls.add("sauce");
 
-                request.setAttribute("article", laListe);
+                request.setAttribute("article", gestionCatalogue.afficherArticleBySousCategorie(ls)); 
             }
+            
             if (cat.equalsIgnoreCase("petite faim")) {
-                List<Article> laListe = new ArrayList<Article>();
-                List<SousCategorie> lsc = gestionCatalogue.SelectSousCatByCategorie(cat);
-                for (SousCategorie lsc1 : lsc) {
-                    List<Article> la = gestionCatalogue.SelectArticleBySousCategorie(lsc1);
-                    for (Article la1 : la) {
-                        laListe.add(la1);
-                    }
-                }
-
-                request.setAttribute("article", laListe);
+                request.setAttribute("article", gestionCatalogue.afficherArticleBySousCategorie(ssCat));
             }
             
             if(cat.equalsIgnoreCase("nos boissons") && (ssCat == null)){
@@ -96,59 +70,45 @@ public class ScCatalogue implements SousController {
             }
             if(cat.equalsIgnoreCase("nos boissons") && (ssCat != null)){
                 url = "/WEB-INF/Catalogue.jsp";
-                SousCategorie ss = new SousCategorie(ssCat);
-                List<Article> la = gestionCatalogue.SelectArticleBySousCategorie(ss);
-                
-                request.setAttribute("article", la);
-            }
-            
-            if(cat.equalsIgnoreCase("nos salades")){
-                List<Article> laListe = new ArrayList<Article>();
-                List<SousCategorie> lsc = gestionCatalogue.SelectSousCatByCategorie(cat);
-                for (SousCategorie lsc1 : lsc) {
-                   List<Article> la = gestionCatalogue.SelectArticleBySousCategorie(lsc1);
-                    for (Article la1 : la) {
-                        laListe.add(la1);
-                    }
-                }
-
-                request.setAttribute("article", laListe); 
+               request.setAttribute("article", gestionCatalogue.afficherArticleBySousCategorie(ssCat)); 
             }
             
             if(cat.equalsIgnoreCase("nos menus") && etape == null){
                 url = "/WEB-INF/choixMenu.jsp";
-                List<Menu> lm = gestionCatalogue.SelectAllMenu();
-                request.setAttribute("burger", lm);
+                request.setAttribute("burger", gestionCatalogue.SelectAllMenu());
             }
+            
             if(cat.equalsIgnoreCase("happy meal") && etape == null){
-                    url = "/WEB-INF/choixBurger.jsp";   
-                    List<Article> laListe = new ArrayList<Article>();
+                    url = "/WEB-INF/choixBurger.jsp";
+                    List<String> ls = new ArrayList<>();
+                    ls.add("petit burger");
+                    ls.add("autre petit plat");
+
                     Long id = gestionCatalogue.getIdMenu("MENU HAPPY MEAL™");
-                    List<SousCategorie> lm = gestionCatalogue.getSousCategorieByMenu(String.valueOf(id));
-                    for (SousCategorie lm1 : lm) {
-                        if (lm1.getNom().equalsIgnoreCase("burger") || lm1.getNom().equalsIgnoreCase("salade") || lm1.getNom().equalsIgnoreCase("petit burger") || lm1.getNom().equalsIgnoreCase("autre petit plat")) {
-                            List<Article> la = gestionCatalogue.SelectArticleBySousCategorie(lm1);
-                            for (Article la1 : la) {
-                                laListe.add(la1);
-                            }
-                        }
-                    }
-                    request.setAttribute("liste", laListe);
+
+                    request.setAttribute("liste", gestionCatalogue.afficherArticleBySousCategorie(ls));
                     request.setAttribute("chemin", "cat=" + cat + "&menu=" + id);
             }
-            if((cat.equalsIgnoreCase("nos menus") || cat.equalsIgnoreCase("happy meal")) && etape != null){
+            if((cat.equalsIgnoreCase("nos menus")) && etape != null){
                 if (etape.equalsIgnoreCase("1")) {
                     url = "/WEB-INF/choixBurger.jsp";
                     List<Article> laListe = new ArrayList<Article>();
                     List<SousCategorie> lm = gestionCatalogue.getSousCategorieByMenu(idMenu);
                     for (SousCategorie lm1 : lm) {
-                        if (lm1.getNom().equalsIgnoreCase("burger") || lm1.getNom().equalsIgnoreCase("salade") || lm1.getNom().equalsIgnoreCase("petit burger") || lm1.getNom().equalsIgnoreCase("autre petit plat")) {
+                        if (lm1.getNom().equalsIgnoreCase("burger") || lm1.getNom().equalsIgnoreCase("salade")) {
                             List<Article> la = gestionCatalogue.SelectArticleBySousCategorie(lm1);
                             for (Article la1 : la) {
                                 laListe.add(la1);
                             }
                         }
                     }
+                    List<String> ls = new ArrayList<>();
+                    ls.add("burger");
+                    ls.add("salade");
+                    
+
+                    choixMenu.setUnMenu(gestionCatalogue.getMenuById(idMenu));
+                    
                     request.setAttribute("liste", laListe);
                     request.setAttribute("chemin", "cat=" + cat + "&menu=" + idMenu);
                 }
